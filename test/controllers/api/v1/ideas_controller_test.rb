@@ -74,10 +74,19 @@ class Api::V1::IdeasControllerTest < ActionController::TestCase
 
   test "#create rejects ideas without a body" do
     idea = { title: 'New Idea' }
-    
+
     post :create, idea: idea, format: :json
 
     assert_response 422
     assert_includes json_response["errors"]["body"], "can't be blank"
+  end
+
+  test "#update changes an idea through the API" do
+    updated_content = { title: "Updated Idea" }
+
+    put :update, id: ideas(:one), idea: updated_content, format: :json
+    ideas(:one).reload
+
+    assert_equal "Updated Idea", ideas(:one).title
   end
 end
