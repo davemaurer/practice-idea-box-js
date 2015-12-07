@@ -62,4 +62,22 @@ class Api::V1::IdeasControllerTest < ActionController::TestCase
     assert_equal idea[:body], json_response["body"]
     assert_equal "swill", json_response["quality"]
   end
+
+  test "#create rejects ideas without a title" do
+    idea = { body: 'Something' }
+
+    post :create, idea: idea, format: :json
+
+    assert_response 422
+    assert_includes json_response["errors"]["title"], "can't be blank"
+  end
+
+  test "#create rejects ideas without a body" do
+    idea = { title: 'New Idea' }
+    
+    post :create, idea: idea, format: :json
+
+    assert_response 422
+    assert_includes json_response["errors"]["body"], "can't be blank"
+  end
 end
