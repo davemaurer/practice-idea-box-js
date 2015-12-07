@@ -16,5 +16,17 @@ class Api::V1::IdeasControllerTest < ActionController::TestCase
     get :index, format: :json
 
     assert_equal Idea.count, json_response.count
+    # using json_response.count here makes it clear to other devs reading our test suite, and allows future
+    # changes in fixtures without acquiring technical debt.
+  end
+
+  test "index contains ideas with the correct properties" do
+    get :index, format: :json
+
+    json_response.each do |idea|
+      assert idea["title"]
+      assert idea["body"]
+      assert idea["quality"]
+    end
   end
 end
