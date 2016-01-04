@@ -5,4 +5,34 @@ class BasicTemplateTest < ActionDispatch::IntegrationTest
     visit root_path
     assert_equal 200, page.status_code
   end
+
+  test "it has an <h1> tag with the content Idea Box" do
+    visit root_path
+    assert page.find("h1").has_content? "Idea Box"
+  end
+
+  test "it has an ideas container on the page" do
+    visit root_path
+    assert page.has_css? ".ideas"
+  end
+
+  test "it has a form for creating new ideas" do
+    visit root_path
+    assert page.has_css? "form.new-idea"
+  end
+
+  test "form has a text input for a new idea title" do
+    visit root_path
+    assert page.has_css? "form.new-idea input[type='text'].new-idea-title"
+  end
+
+  test "form has a text input for a new idea input" do
+    visit root_path
+    assert page.has_css? "form.new-idea input[type='text'].new-idea-input"
+  end
+
+  test "form has an input button" do
+    visit root_path
+    assert page.has_css? "form.new-idea input[type='submit'].new-idea-submit"
+  end
 end
